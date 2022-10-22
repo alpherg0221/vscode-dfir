@@ -15,10 +15,21 @@ async function search(mode) {
     // エディタがないまたは".log"ファイルではない場合は処理を終了
     if (!(await utils.isLogFile())) return;
 
+    const selection = vscode.window.activeTextEditor.selection;
+    let range;
+    if (selection.isEmpty) {
+        range = vscode.window.activeTextEditor.document.getWordRangeAtPosition(
+            vscode.window.activeTextEditor.selection.active, /\S+/,
+        );
+    } else {
+        range = vscode.window.activeTextEditor.selection;
+    }
+
+    const selected = range ? vscode.window.activeTextEditor.document.getText(range) : "";
+
     // 検索する文字の入力を取得
-    const input = await vscode.window.showQuickPick(
-        ["evt=ps", "evt=ps subEvt=start", "evt=file", "evt=net", "evt=reg",],
-        { title: `絞り込み (${mode}を残す)` },
+    const input = await vscode.window.showInputBox(
+        { title: `絞り込み (${mode}を残す)`, value: selected, },
     );
     if (input === void 0) return;
 

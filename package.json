@@ -44,11 +44,11 @@
     "keybindings": [
       {
         "command": "vscode-dfir.search-include",
-        "key": "ctrl+f"
+        "key": "ctrl+shift+f"
       },
       {
         "command": "vscode-dfir.search-exclude",
-        "key": "ctrl+shift+f"
+        "key": "alt+f"
       }
     ]
   },
