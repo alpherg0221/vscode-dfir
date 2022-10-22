@@ -37,14 +37,16 @@ async function search(mode) {
     const editor = vscode.window.activeTextEditor;
     const text = editor.document.getText();
 
+    const escaped = input.replace(/[-\/\\^$*+?.()|\[\]{}]/g, '\\$&');
+
     // 検索
     let matches;
     switch (mode) {
         case SearchMode.INCLUDE:
-            matches = [...text.matchAll(RegExp("^(?!.*" + input + ").*$", "gm"))];
+            matches = [...text.matchAll(RegExp("^(?!.*" + escaped + ").*$", "gm"))];
             break;
         case SearchMode.EXCLUDE:
-            matches = [...text.matchAll(RegExp("^.*" + input + ".*$", "gm"))];
+            matches = [...text.matchAll(RegExp("^.*" + escaped + ".*$", "gm"))];
             break;
         default:
             return;
