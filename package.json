@@ -1,0 +1,72 @@
+{
+  "name": "vscode-dfir",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.72.0"
+  },
+  "displayName": "DFIR Tool",
+  "description": "VSCode Extension for DFIR",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "menus": {
+      "editor/title": [
+        {
+          "command": "vscode-dfir.search-include",
+          "group": "navigation",
+          "when": "editorLangId == log"
+        },
+        {
+          "command": "vscode-dfir.search-exclude",
+          "group": "navigation",
+          "when": "editorLangId == log"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "vscode-dfir.search-include",
+        "title": "絞り込み (含む)",
+        "category": "dfir-search",
+        "icon": "$(search)"
+      },
+      {
+        "command": "vscode-dfir.search-exclude",
+        "title": "絞り込み (含まない)",
+        "category": "dfir-search",
+        "icon": "$(search-stop)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "vscode-dfir.search-include",
+        "key": "ctrl+f"
+      },
+      {
+        "command": "vscode-dfir.search-exclude",
+        "key": "ctrl+shift+f"
+      }
+    ]
+  },
+  "main": "./extension.js",
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.72.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "eslint": "^8.24.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "typescript": "^4.8.4",
+    "@vscode/test-electron": "^2.1.5"
+  }
+}
