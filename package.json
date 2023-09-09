@@ -52,7 +52,7 @@
       }
     ]
   },
-  "main": "./extension.js",
+  "main": "./module/extension.js",
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
