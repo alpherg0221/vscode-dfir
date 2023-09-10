@@ -1,17 +1,14 @@
-const vscode = require('vscode');
-const utils = require('./utils.js');
+import * as vscode from "vscode";
+import * as utils from "./utils.js";
 
 // 参考：https://stackoverflow.com/questions/67934437/vscode-is-there-any-api-to-get-search-results
 
-class SearchMode {
+export class SearchMode {
     static get INCLUDE() { return "含む行"; }
     static get EXCLUDE() { return "含まない行"; }
 }
 
-/**
- * @param {string} mode
- */
-async function search(mode) {
+export async function search(mode: string) {
     // エディタがないまたは".log"ファイルではない場合は処理を終了
     if (!(await utils.isLogFile())) return;
 
@@ -60,9 +57,4 @@ async function search(mode) {
             builder.replace(new vscode.Selection(startPos, endPos), "");
         });
     });
-}
-
-module.exports = {
-    SearchMode,
-    search,
 }

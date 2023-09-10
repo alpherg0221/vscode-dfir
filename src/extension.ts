@@ -1,15 +1,15 @@
-const vscode = require('vscode');
-const search = require('./search');
-const highlight = require('./highlight');
-const utils = require('./utils.js');
+import * as vscode from "vscode";
+import * as search from "./search";
+import * as highlight from "./highlight";
+import * as utils from "./utils.js";
+import * as webview from "./webview";
 
-/**
-* @param {vscode.ExtensionContext} context
-*/
-async function activate(context) {
+
+export async function activate(context: vscode.ExtensionContext) {
 	// コマンドの登録
 	vscode.commands.registerCommand("vscode-dfir.search-include", async () => search.search(search.SearchMode.INCLUDE));
 	vscode.commands.registerCommand("vscode-dfir.search-exclude", async () => search.search(search.SearchMode.EXCLUDE));
+	vscode.commands.registerCommand("vscode-dfir.open-mk2logtree", async () => webview.showWebView(vscode.window.activeTextEditor.document.fileName));
 
 	vscode.window.onDidChangeActiveTextEditor(async () => {
 		await highlight.highlight();
@@ -25,9 +25,4 @@ async function activate(context) {
 	}
 }
 
-function deactivate() { }
-
-module.exports = {
-	activate,
-	deactivate
-};
+export function deactivate() { }

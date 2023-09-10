@@ -1,6 +1,6 @@
 {
   "name": "vscode-dfir",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.72.0"
   },
@@ -24,6 +24,11 @@
           "command": "vscode-dfir.search-exclude",
           "group": "navigation",
           "when": "editorLangId == log"
+        },
+        {
+          "command": "vscode-dfir.open-mk2logtree",
+          "group": "navigation",
+          "when": "editorLangId == json"
         }
       ]
     },
@@ -39,6 +44,12 @@
         "title": "絞り込み (含まない)",
         "category": "dfir-search",
         "icon": "$(search-stop)"
+      },
+      {
+        "command": "vscode-dfir.open-mk2logtree",
+        "title": "Treeで表示",
+        "category": "dfir-tree",
+        "icon": "$(list-tree)"
       }
     ],
     "keybindings": [
@@ -52,17 +63,22 @@
       }
     ]
   },
-  "main": "./module/extension.js",
+  "main": "./out/extension.js",
   "scripts": {
-    "lint": "eslint .",
-    "pretest": "npm run lint",
-    "test": "node ./test/runTest.js"
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.72.0",
+    "@types/vscode": "^1.82.0",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.0",
     "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
     "eslint": "^8.24.0",
     "glob": "^8.0.3",
     "mocha": "^10.0.0",

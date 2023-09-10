@@ -1,5 +1,5 @@
-const vscode = require('vscode');
-const utils = require('./utils.js');
+import * as vscode from "vscode";
+import * as utils from "./utils.js";
 
 const decorationList = [
     vscode.window.createTextEditorDecorationType({ backgroundColor: "#FF8C0044" }), // evt=net
@@ -7,7 +7,7 @@ const decorationList = [
     vscode.window.createTextEditorDecorationType({ backgroundColor: "#00800044" }), // evt=file
 ]
 
-async function highlight() {
+export async function highlight() {
     // エディタがないまたは".log"ファイルではない場合は処理を終了
     if (!(await utils.isLogFile())) return;
 
@@ -38,8 +38,4 @@ async function highlight() {
     editor.setDecorations(decorationList[0], decorationsList[0]);
     editor.setDecorations(decorationList[1], decorationsList[1]);
     editor.setDecorations(decorationList[2], decorationsList[2]);
-}
-
-module.exports = {
-    highlight,
 }
