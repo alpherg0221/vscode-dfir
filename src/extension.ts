@@ -1,15 +1,15 @@
 import * as vscode from "vscode";
 import * as search from "./search";
 import * as highlight from "./highlight";
-import * as utils from "./utils.js";
-import * as webview from "./webview";
+import * as utils from "./utils";
+import * as ancestor from "./ancestor";
 
 
 export async function activate(context: vscode.ExtensionContext) {
 	// コマンドの登録
 	vscode.commands.registerCommand("vscode-dfir.search-include", async () => search.search(search.SearchMode.INCLUDE));
 	vscode.commands.registerCommand("vscode-dfir.search-exclude", async () => search.search(search.SearchMode.EXCLUDE));
-	vscode.commands.registerCommand("vscode-dfir.open-mk2logtree", async () => webview.showWebView(vscode.window.activeTextEditor.document.fileName));
+	vscode.commands.registerCommand("vscode-dfir.search-ancestor", async () => ancestor.searchAncestor(""));
 
 	vscode.window.onDidChangeActiveTextEditor(async () => {
 		await highlight.highlight();

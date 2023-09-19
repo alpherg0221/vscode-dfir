@@ -2,7 +2,7 @@
   "name": "vscode-dfir",
   "version": "0.2.0",
   "engines": {
-    "vscode": "^1.72.0"
+    "vscode": "^1.82.0"
   },
   "displayName": "DFIR Tool",
   "description": "VSCode Extension for DFIR",
@@ -24,11 +24,13 @@
           "command": "vscode-dfir.search-exclude",
           "group": "navigation",
           "when": "editorLangId == log"
-        },
+        }
+      ],
+      "view/title":[
         {
-          "command": "vscode-dfir.open-mk2logtree",
+          "command": "vscode-dfir.search-ancestor",
           "group": "navigation",
-          "when": "editorLangId == json"
+          "when": "view == ancestor-view"
         }
       ]
     },
@@ -46,10 +48,10 @@
         "icon": "$(search-stop)"
       },
       {
-        "command": "vscode-dfir.open-mk2logtree",
-        "title": "Treeで表示",
-        "category": "dfir-tree",
-        "icon": "$(list-tree)"
+        "command": "vscode-dfir.search-ancestor",
+        "title": "親プロセスを検索",
+        "category": "dfir-search",
+        "icon": "$(type-hierarchy)"
       }
     ],
     "keybindings": [
@@ -61,7 +63,24 @@
         "command": "vscode-dfir.search-exclude",
         "key": "alt+f"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "ancestor",
+          "title": "DFIR",
+          "icon": "$(type-hierarchy)"
+        }
+      ]
+    },
+    "views": {
+      "ancestor": [
+        {
+          "id": "ancestor-view",
+          "name": "親プロセス"
+        }
+      ]
+    }
   },
   "main": "./out/extension.js",
   "scripts": {
