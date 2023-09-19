@@ -51,7 +51,7 @@
         "command": "vscode-dfir.search-ancestor",
         "title": "親プロセスを検索",
         "category": "dfir-search",
-        "icon": "$(type-hierarchy)"
+        "icon": "$(search)"
       }
     ],
     "keybindings": [
