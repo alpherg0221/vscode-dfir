@@ -3,20 +3,42 @@ import * as search from "./search";
 import * as highlight from "./highlight";
 import * as utils from "./utils";
 import * as ancestor from "./ancestor";
+import * as children from "./children";
 
 
 export async function activate(context: vscode.ExtensionContext) {
-	// コマンドの登録
+	// 検索コマンド(含む行を残す)の登録
 	vscode.commands.registerCommand("vscode-dfir.search-include", async () => search.search(search.SearchMode.INCLUDE));
+	// 検索コマンド(含まない行を残す)の登録
 	vscode.commands.registerCommand("vscode-dfir.search-exclude", async () => search.search(search.SearchMode.EXCLUDE));
-	vscode.commands.registerCommand("vscode-dfir.search-ancestor", async () => ancestor.searchAncestor(""));
+	// 親プロセス検索コマンドの登録
+	vscode.commands.registerCommand("vscode-dfir.search-ancestor", async () => ancestor.searchAncestor());
+	// 子プロセス数カウントコマンドの登録
+	vscode.commands.registerCommand("vscode-dfir.count-child", async () => children.getChildCount());
+	// 子プロセス数一覧画面から親プロセスを検索するコマンドの登録
+	vscode.commands.registerCommand("vscode-dfir.search-ancestor.sn", async (element: children.TreeItem) => {
+		if (element) {
+			ancestor.searchAncestor(element.self.sn);
+		}
+	});
+
+	// 親プロセス検索画面のplaceholder
+	vscode.window.registerTreeDataProvider("ancestor-view", new ancestor.TreeDataProvider([{
+		pGuid: "ROOT", sn: "ROOT", psPath: "ROOT", line: "ROOT",
+	}]));
+	// 子プロセス検索画面のplaceholder
+	vscode.window.registerTreeDataProvider("children-view", new children.TreeDataProvider([{
+		childCnt: 0, date: "", descendantCnt: 0, evt: "", psPath: "", sn: "ROOT",
+	}]));
 
 	vscode.window.onDidChangeActiveTextEditor(async () => {
 		await highlight.highlight();
 	}, null, context.subscriptions);
 
 	vscode.workspace.onDidChangeTextDocument(async (event) => {
-		if (event.document.fileName != vscode.window.activeTextEditor.document.fileName) return;
+		if (event.document.fileName !== vscode.window.activeTextEditor.document.fileName) {
+			return;
+		}
 		await highlight.highlight();
 	}, null, context.subscriptions);
 

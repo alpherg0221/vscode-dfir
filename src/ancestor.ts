@@ -6,20 +6,28 @@ type ParseInfo = {
     sn: string;
     psPath: string;
     line: string;
-}
+};
 
-export async function searchAncestor(sn: string) {
+export async function searchAncestor(sn?: string) {
     // エディタがないまたは".log"ファイルではない場合は処理を終了
-    if (!(await utils.isLogFile())) return;
-
-    // 検索ボックスからsnを取得
-    const input = await vscode.window.showInputBox(
-        { title: "親プロセスを検索", placeHolder: "snを入力してください", },
-    );
-    if (input === void 0) {
-        console.log("No Input");
+    if (!(await utils.isLogFile())) {
         return;
     }
+
+    // 検索ボックスからsnを取得
+    let input: string;
+    if (sn === null) {
+        input = await vscode.window.showInputBox(
+            { title: "親プロセスを検索", placeHolder: "snを入力してください", },
+        );
+        if (input === void 0) {
+            console.log("No Input");
+            return;
+        }
+    } else {
+        input = sn;
+    }
+
 
     // 現在のテキストを取得
     const text = vscode.window.activeTextEditor.document.getText();
@@ -38,12 +46,14 @@ export async function searchAncestor(sn: string) {
     const infoList: ParseInfo[] = [info];
 
     // ループで親取り出し
-    while (info.pGuid != "ROOT") {
+    while (info.pGuid !== "ROOT") {
         // 指定されたparentGUIDの行を取得
         matchedLine = await getLine(text, info.pGuid);
 
         // 指定されたparentGUIDが存在しなければ処理終了
-        if (matchedLine === null) break;
+        if (matchedLine === null) {
+            break;
+        }
 
         // infoの取得とinfoListへの追加
         info = await parseLine(matchedLine.toString());
@@ -60,7 +70,9 @@ async function getLine(text: string, pGuid: string) {
     const matchedLine = text.match(RegExp(`^.*evt=ps subEvt=start.*psGUID={${pGuid}}.*$`, "m"));
 
     // 指定されたsnが存在しなければ処理終了
-    if (matchedLine === null) return null;
+    if (matchedLine === null) {
+        return null;
+    }
 
     return matchedLine;
 }
@@ -102,9 +114,6 @@ async function parseLine(line: string) {
 }
 
 async function showAncestor(infoList: ParseInfo[]) {
-    const RED = "\x1b[31m";
-    const RESET = "\x1b[0m";
-
     vscode.window.createTreeView("ancestor-view", {
         treeDataProvider: new TreeDataProvider(infoList),
     });
@@ -148,24 +157,24 @@ export class TreeItem extends vscode.TreeItem {
         }
 
         // snがROOTならROOT専用の表示に変更
-        if (infoList[0].sn == "ROOT") {
+        if (infoList[0].sn === "ROOT") {
             this.label = "ROOT";
             this.iconPath = new vscode.ThemeIcon(
                 "type-hierarchy",
                 new vscode.ThemeColor("terminal.ansiBrightRed"),
             );
-        } else if (infoList[0].psPath == "") {
+        } else if (infoList[0].psPath === "") {
             this.label = `sn=${infoList[0].sn}`; //24647 24624
             this.iconPath = new vscode.ThemeIcon(
                 "server-process",
                 new vscode.ThemeColor("terminal.ansiBrightBlack"),
-            )
+            );
         } else {
             this.label = `sn=${infoList[0].sn}  psPath=${infoList[0].psPath}`;
             this.iconPath = new vscode.ThemeIcon(
                 "notebook-execute-all",
                 new vscode.ThemeColor("terminal.ansiGreen"),
-            )
+            );
         }
 
         this.tooltip = infoList[0].line;

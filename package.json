@@ -31,6 +31,17 @@
           "command": "vscode-dfir.search-ancestor",
           "group": "navigation",
           "when": "view == ancestor-view"
+        },
+        {
+          "command": "vscode-dfir.count-child",
+          "group": "navigation",
+          "when": "view == children-view"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "vscode-dfir.search-ancestor.sn",
+          "when": "view == children-view"
         }
       ]
     },
@@ -52,6 +63,17 @@
         "title": "親プロセスを検索",
         "category": "dfir-search",
         "icon": "$(search)"
+      },
+      {
+        "command": "vscode-dfir.search-ancestor.sn",
+        "title": "親プロセスを検索",
+        "category": "dfir-search"
+      },
+      {
+        "command": "vscode-dfir.count-child",
+        "title": "子プロセスをカウント",
+        "category": "dfir-search",
+        "icon": "$(run)"
       }
     ],
     "keybindings": [
@@ -78,6 +100,10 @@
         {
           "id": "ancestor-view",
           "name": "親プロセス"
+        },
+        {
+          "id": "children-view",
+          "name": "子プロセス"
         }
       ]
     }
@@ -103,5 +129,9 @@
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "axios": "^1.5.0",
+    "shlex": "^2.1.2"
   }
 }
