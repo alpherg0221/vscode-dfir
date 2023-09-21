@@ -1,6 +1,9 @@
 import * as vscode from "vscode";
-import * as utils from "./utils.js";
+import * as utils from "./utils/utils.js";
 import axios, { AxiosResponse } from "axios";
+import { Mk2Tree } from "./utils/mk2Log.js";
+import { readFile, writeFile } from "fs";
+import { Mk2LogTree } from "./utils/mk2LogTree.js";
 
 type Mk2LogItem = {
     childCnt: number;
@@ -24,14 +27,25 @@ export async function getChildCount() {
         jsonList.push(utils.dictify(line));
     });
 
+    // JSONをツリーに変換
+    const mk2logtree = new Mk2LogTree(jsonList);
+    const childCount: Mk2LogItem[] = mk2logtree.childCount.map((child) => ({
+        childCnt: child["childCnt"] as number,
+        date: child["date"] as string,
+        descendantCnt: child["descendantCnt"] as number,
+        evt: child["evt"] as string,
+        psPath: child["psPath"] as string,
+        sn: child["sn"] as string,
+    }));
+
+    // let writeText = JSON.stringify(childCount, null, 2);
+    // writeFile("C:\\Users\\yuki\\Desktop\\write.json", writeText, () => { });
+
     // 現在のファイル名を取得
     const filename = vscode.window.activeTextEditor.document.fileName.split("\\").slice(-1)[0].replace(".log", "");
 
-    // APIからtreeを取得
-    const res = await axios.post("http://www.az.lab.uec.ac.jp:8080/tree/count/vsc", JSON.stringify(jsonList));
-
     // treeを表示
-    await showChildren(res.data, filename);
+    await showChildren(childCount, filename);
 }
 
 export async function showChildren(tree: Mk2LogItem[], filename: string) {

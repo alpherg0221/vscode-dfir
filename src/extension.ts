@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as search from "./search";
 import * as highlight from "./highlight";
-import * as utils from "./utils";
+import * as utils from "./utils/utils";
 import * as ancestor from "./ancestor";
 import * as children from "./children";
 

@@ -15,8 +15,8 @@ export async function isLogFile(): Promise<boolean> {
 export function dictify(line: string) {
     const date = Date.parse(line.slice(0, 29));
     const entry = {
-        "date": line.slice(0, 29),
-        "timeStamp": Math.floor(date.valueOf() / 1000),
+        "date": `${line.slice(6, 10)}/${line.slice(0, 5)} ${line.slice(11, 23)}`,
+        "timeStamp": Math.floor(date.valueOf() / 1000).toString(),
     };
 
     line = line.slice(30);
@@ -37,9 +37,8 @@ export function dictify(line: string) {
     }
 
     elems.forEach((elem) => {
-        let key: string, value: string;
-        [key, value] = elem.split("=", 2);
-        entry[key] = value;
+        const [key, ...value] = elem.split("=");
+        entry[key] = value.join("=");
     });
 
     return entry;

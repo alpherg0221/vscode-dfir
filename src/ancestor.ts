@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import * as utils from "./utils.js";
+import * as utils from "./utils/utils.js";
 
 type ParseInfo = {
     pGuid: string;

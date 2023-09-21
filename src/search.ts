@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import * as utils from "./utils.js";
+import * as utils from "./utils/utils.js";
 
 // 参考：https://stackoverflow.com/questions/67934437/vscode-is-there-any-api-to-get-search-results
 

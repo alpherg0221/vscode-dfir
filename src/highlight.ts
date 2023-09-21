@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import * as utils from "./utils.js";
+import * as utils from "./utils/utils.js";
 
 const decorationList = [
     vscode.window.createTextEditorDecorationType({ backgroundColor: "#FF8C0044" }), // evt=net
