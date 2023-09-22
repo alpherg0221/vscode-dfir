@@ -12,7 +12,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// 検索コマンド(含まない行を残す)の登録
 	vscode.commands.registerCommand("vscode-dfir.search-exclude", async () => search.search(search.SearchMode.EXCLUDE));
 	// 親プロセス検索コマンドの登録
-	vscode.commands.registerCommand("vscode-dfir.search-ancestor", async () => ancestor.searchAncestor());
+	vscode.commands.registerCommand("vscode-dfir.search-ancestor", async () => ancestor.searchAncestor(null));
 	// 子プロセス数カウントコマンドの登録
 	vscode.commands.registerCommand("vscode-dfir.count-child", async () => children.getChildCount());
 	// 子プロセス数一覧画面から親プロセスを検索するコマンドの登録
