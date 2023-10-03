@@ -28,7 +28,6 @@ export async function searchAncestor(sn?: string) {
         input = sn;
     }
 
-
     // 現在のテキストを取得
     const text = vscode.window.activeTextEditor.document.getText();
 
@@ -103,7 +102,7 @@ async function parseLine(line: string) {
         }
     })();
     const psPath = (() => {
-        if (matchPsPath === null || matchPGUID.length < 2 || matchPsPath[1] === null) {
+        if (matchPsPath === null || matchPsPath.length < 2 || matchPsPath[1] === null) {
             return "";
         } else {
             return matchPsPath[1];
