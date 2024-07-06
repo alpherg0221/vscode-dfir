@@ -37,8 +37,8 @@ export class Mk2LogTree {
     private addCount(tree: JSONDict): [number, JSONDict] {
         const _tree = structuredClone(tree);
 
-        // evt="ps"以外の場合
-        if (!["ps", "ROOT"].includes(_tree["evt"] as string)) {
+        // evt="ps"または、subEvt="inject"、subEvt="guardInject"以外の場合
+        if (!["ps", "ROOT"].includes(_tree["evt"] as string) || ["inject", "guardInject"].includes(_tree["subEvt"] as string)) {
             return [1, _tree];
         }
 
@@ -67,8 +67,8 @@ export class Mk2LogTree {
         const _tree = structuredClone(tree);
         const countList: JSONDict[] = [];
 
-        // evt="ps"以外の場合
-        if (!["ps", "ROOT"].includes(_tree["evt"] as string)) {
+        // evt="ps"または、subEvt="inject"、subEvt="guardInject"以外の場合
+        if (!["ps", "ROOT"].includes(_tree["evt"] as string) || ["inject", "guardInject"].includes(_tree["subEvt"] as string)) {
             return countList;
         }
 
